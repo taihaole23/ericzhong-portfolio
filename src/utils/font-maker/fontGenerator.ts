@@ -85,20 +85,32 @@ const generateFontBuffer = async (fontData: Record<string, Stroke[]>, options: G
     // ensuring we wait for it to be ready? It should be ready via 'beforeInteractive' or we check window.
 
     // Safety check for SSR environment where window is undefined (though generateFont is called on client action)
-    if (typeof window === 'undefined' || !(window as any).paper) {
-        console.error("Paper.js not loaded");
+    if (typeof window === 'undefined') {
+        console.error("Window is undefined");
         return null;
     }
 
     const paper = (window as any).paper;
-    console.log('Paper.js loaded:', !!paper);
+    if (!paper) {
+        console.error("Paper.js not found on window. Ensure /paper-full.min.js is loaded.");
+        return null;
+    }
+
+    console.log('Paper.js found, version:', paper.version);
+    console.log('OpenType.js found:', !!opentype);
 
     // Setup Paper.js on a headless canvas
     const canvas = document.createElement('canvas');
     canvas.width = 1000;
     canvas.height = 1000;
+
+    // Clear any previous paper projects to avoid memory leaks or state issues
+    if (paper.projects && paper.projects.length > 0) {
+        paper.projects.forEach((p: any) => p.remove());
+    }
+
     paper.setup(canvas);
-    console.log('Paper.js setup complete');
+    console.log('Paper.js setup complete on headless canvas');
 
     // Create a NotDef glyph
     const notdefPath = new opentype.Path();
@@ -131,10 +143,17 @@ const generateFontBuffer = async (fontData: Record<string, Stroke[]>, options: G
     const TARGET_TALL = 700;
     const TARGET_SHORT = 500;
 
-    Object.keys(fontData).forEach(char => {
-        const strokes = fontData[char];
-        if (!strokes || strokes.length === 0) return;
+    const charKeys = Object.keys(fontData);
+    console.log(`Processing ${charKeys.length} characters:`, charKeys);
 
+    charKeys.forEach(char => {
+        const strokes = fontData[char];
+        if (!strokes || strokes.length === 0) {
+            console.log(`Skipping character '${char}' - no strokes`);
+            return;
+        }
+
+        console.log(`Generating glyph for character '${char}' with ${strokes.length} strokes`);
         const group = getCharGroup(char);
         const bbox = getBoundingBox(strokes);
 
@@ -393,19 +412,28 @@ const generateFontBuffer = async (fontData: Record<string, Stroke[]>, options: G
         });
 
         glyphs.push(glyph);
+        console.log(`Successfully added glyph for '${char}' to font`);
     });
 
-    const font = new opentype.Font({
-        familyName: options.familyName || 'MyCustomFont',
-        styleName: options.styleName || 'Regular',
-        unitsPerEm: 1000,
-        ascender: 800,
-        descender: -200,
-        designer: options.author || 'Font Maker',
-        version: options.version || '1.000',
-        glyphs: glyphs,
-        outlinesFormat: 'truetype'
-    } as any);
+    console.log(`Generating final font with ${glyphs.length} glyphs...`);
+    try {
+        const font = new opentype.Font({
+            familyName: options.familyName || 'MyCustomFont',
+            styleName: options.styleName || 'Regular',
+            unitsPerEm: 1000,
+            ascender: 800,
+            descender: -200,
+            designer: options.author || 'Font Maker',
+            version: options.version || '1.000',
+            glyphs: glyphs,
+            outlinesFormat: 'truetype'
+        } as any);
 
-    return font.toArrayBuffer();
+        const buffer = font.toArrayBuffer();
+        console.log(`Font generation complete. Buffer size: ${buffer.byteLength} bytes`);
+        return buffer;
+    } catch (e) {
+        console.error("Failed to generate final font buffer:", e);
+        return null;
+    }
 };
