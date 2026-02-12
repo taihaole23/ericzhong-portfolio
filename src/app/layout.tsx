@@ -5,6 +5,7 @@ import "@/resources/custom.css";
 import classNames from "classnames";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   Background,
   Column,
@@ -22,6 +23,12 @@ import { Flex, Column } from "@once-ui-system/core";
 import { Providers } from "@/components";
 import { baseURL, fonts, style, dataStyle, person } from "@/resources";
 >>>>>>> e06b880 (Stripped the site and added font maker)
+=======
+import { Flex, Column } from "@once-ui-system/core";
+import { Providers } from "@/components";
+import { baseURL, fonts, style, dataStyle, person } from "@/resources";
+import { Analytics } from "@vercel/analytics/next";
+>>>>>>> ee66f16 (Resolve conflict and prepare for PR)
 
 export async function generateMetadata() {
   return {
