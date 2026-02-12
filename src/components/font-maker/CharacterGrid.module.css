@@ -1,0 +1,50 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--bg-app);
+    /* Use app bg for contrast against panel? Or var(--bg-workspace)? Let's use standard bg-app or transparent */
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+}
+
+.charButton {
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.active {
+    background-color: var(--primary);
+    color: var(--primary-fg);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.hasContent {
+    background-color: var(--button-hover);
+    /* Substitute for blue-50 */
+    color: var(--primary);
+    border-color: var(--border);
+}
+
+.hasContent:hover {
+    filter: brightness(0.95);
+}
+
+.empty {
+    background-color: var(--button-bg, white);
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+.empty:hover {
+    background-color: var(--button-hover);
+}
