@@ -1,0 +1,59 @@
+:root {
+    /* Font Maker Specific Theme Variables */
+    --bg-app: #ffffff;
+    --bg-panel: #f9fafb;
+    --bg-workspace: #f3f4f6;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-fg: #ffffff;
+    --button-bg: #ffffff;
+    --button-hover: #f9fafb;
+    --active-bg: #1f2937;
+    --active-fg: #ffffff;
+    --active-hover-fg: #1f2937;
+    --danger-bg: #fef2f2;
+    --danger-fg: #dc2626;
+    --danger-border: #fecaca;
+    --canvas-shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+    --bg-app: #0f172a;
+    --bg-panel: #1e293b;
+    --bg-workspace: #020617;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --primary: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-fg: #ffffff;
+    --button-bg: #1e293b;
+    --button-hover: #334155;
+    --active-bg: #f8fafc;
+    --active-fg: #0f172a;
+    --active-hover-fg: #f8fafc;
+    --danger-bg: #450a0a;
+    --danger-fg: #fca5a5;
+    --danger-border: #7f1d1d;
+    --canvas-shadow: rgba(0, 0, 0, 0.5);
+}
+
+.font-maker-wrapper {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+        Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex: 1;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow: hidden;
+    /* Prevent the main container from scrolling */
+}
+
+.font-maker-wrapper * {
+    font-family: inherit;
+}
