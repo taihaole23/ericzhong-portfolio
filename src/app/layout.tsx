@@ -4,9 +4,24 @@ import "@/resources/custom.css";
 
 import classNames from "classnames";
 
+<<<<<<< HEAD
 import { Flex, Column } from "@once-ui-system/core";
 import { Providers } from "@/components";
 import { baseURL, fonts, style, dataStyle, person } from "@/resources";
+=======
+import {
+  Background,
+  Column,
+  Flex,
+  Meta,
+  opacity,
+  RevealFx,
+  SpacingToken,
+} from "@once-ui-system/core";
+import { Footer, Header, RouteGuard, Providers } from "@/components";
+import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
+import { Analytics } from "@vercel/analytics/next";
+>>>>>>> bfe1a2abf6ea11a52d090cd97af5509605508119
 
 export async function generateMetadata() {
   return {
@@ -107,6 +122,7 @@ export default async function RootLayout({
           </Flex>
         </Column>
       </Providers>
+      <Analytics />
     </Flex>
   );
 }
