@@ -173,6 +173,7 @@ const Editor: React.FC = () => {
         version: string;
         includeBold: boolean;
     }) => {
+        console.log("Exporting font with metadata:", metadata);
         try {
             // 1. Export the Regular version
             generateFont(fontData, {
@@ -185,6 +186,7 @@ const Editor: React.FC = () => {
 
             // 2. Export Bold version if requested
             if (metadata.includeBold) {
+                console.log("Scheduling Bold version export...");
                 // Short delay to avoid browser blocking multiple downloads
                 setTimeout(() => {
                     generateFont(fontData, {
@@ -199,26 +201,34 @@ const Editor: React.FC = () => {
             }
 
             setIsExportModalOpen(false);
+            alert("Export started! Check your downloads.");
         } catch (e) {
-            console.error("Export failed", e);
-            alert("Failed to export font. See console for details.");
+            console.error("Export failed:", e);
+            alert(`Export failed: ${e instanceof Error ? e.message : String(e)}`);
         }
     };
 
     const handleRefreshPreview = async () => {
         setIsPreviewLoading(true);
+        console.log("Refreshing preview...");
         try {
+            console.log("Font data keys:", Object.keys(fontData));
             const url = await generateFontDataURL(fontData, {
                 autoScale,
                 weightMultiplier: previewBold ? 2.5 : 1.0
             });
             if (url) {
+                console.log("Preview URL generated successfully:", url);
                 // If there was a previous URL, revoke it to avoid memory leaks
                 if (previewUrl) URL.revokeObjectURL(previewUrl);
                 setPreviewUrl(url);
+            } else {
+                console.warn("generateFontDataURL returned null");
+                alert("Failed to generate preview. Check console for logs.");
             }
         } catch (e) {
-            console.error("Preview failed", e);
+            console.error("Preview failed:", e);
+            alert(`Preview failed: ${e instanceof Error ? e.message : String(e)}`);
         } finally {
             setIsPreviewLoading(false);
         }
